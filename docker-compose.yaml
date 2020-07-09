@@ -3,9 +3,12 @@ version: '3.1'
 services:
   redis:
     image: 'redis:3.2.7'
+    restart: always
 
   postgres:
     image: postgres:9.6
+    restart: always
+
     environment:
       - POSTGRES_USER=airflow
       - POSTGRES_PASSWORD=airflow
@@ -24,9 +27,18 @@ services:
       - LOAD_EX=n
       - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
       - EXECUTOR=Celery
+      - AIRFLOW__WEBSERVER__WORKERS=2
+      - AIRFLOW__CELERY__WORKER_CONCURRENCY=16
+      - AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS=False
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__CORE__DAG_CONCURRENCY=32
+      - AIRFLOW__CORE__PARALLELISM=64
+      - AIRFLOW__CORE__SQL_ALCHEMY_POOL_RECYCLE=3600
+      - AIRFLOW__CORE__SQL_ALCHEMY_POOL_SIZE=100
     volumes:
       - ./dags:/usr/local/airflow/dags
       - ./plugins:/usr/local/airflow/plugins
+      - ./sql:/usr/local/airflow/sql
     ports:
       - "8080:8080"
     command: webserver
@@ -43,6 +55,14 @@ services:
       - redis
     environment:
       - EXECUTOR=Celery
+      - AIRFLOW__WEBSERVER__WORKERS=2
+      - AIRFLOW__CELERY__WORKER_CONCURRENCY=16
+      - AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS=False
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__CORE__DAG_CONCURRENCY=32
+      - AIRFLOW__CORE__PARALLELISM=64
+      - AIRFLOW__CORE__SQL_ALCHEMY_POOL_RECYCLE=3600
+      - AIRFLOW__CORE__SQL_ALCHEMY_POOL_SIZE=100
     ports:
       - "5555:5555"
     command: flower
@@ -55,10 +75,19 @@ services:
     volumes:
       - ./dags:/usr/local/airflow/dags
       - ./plugins:/usr/local/airflow/plugins
+      - ./sql:/usr/local/airflow/sql
     environment:
       - LOAD_EX=n
       - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
       - EXECUTOR=Celery
+      - AIRFLOW__WEBSERVER__WORKERS=2
+      - AIRFLOW__CELERY__WORKER_CONCURRENCY=16
+      - AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS=False
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__CORE__DAG_CONCURRENCY=32
+      - AIRFLOW__CORE__PARALLELISM=64
+      - AIRFLOW__CORE__SQL_ALCHEMY_POOL_RECYCLE=3600
+      - AIRFLOW__CORE__SQL_ALCHEMY_POOL_SIZE=100
     command: scheduler
 
   worker:
@@ -69,7 +98,16 @@ services:
     volumes:
       - ./dags:/usr/local/airflow/dags
       - ./plugins:/usr/local/airflow/plugins
+      - ./sql:/usr/local/airflow/sql
     environment:
       - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
       - EXECUTOR=Celery
+      - AIRFLOW__WEBSERVER__WORKERS=2
+      - AIRFLOW__CELERY__WORKER_CONCURRENCY=16
+      - AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS=False
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__CORE__DAG_CONCURRENCY=32
+      - AIRFLOW__CORE__PARALLELISM=64
+      - AIRFLOW__CORE__SQL_ALCHEMY_POOL_RECYCLE=3600
+      - AIRFLOW__CORE__SQL_ALCHEMY_POOL_SIZE=100
     command: worker
