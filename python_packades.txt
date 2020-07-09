@@ -1,0 +1,17 @@
+psycopg2-binary==2.7.5
+SQLAlchemy==1.1.18
+boto3==1.9.91
+botocore==1.12.91
+simple-salesforce==0.74.2
+pandas==0.23.0
+Jinja2==2.8.1
+jsonmerge ==1.5.1
+jsonschema==2.6.0
+redis==3.2.0
+spur
+pyarrow==0.13.0
+s3fs==0.2.1
+openpyxl==2.6.2
+salesforce_bulk_api==1.2.0
+multipledispatch==0.6.0
+apache-airflow[crypto,celery,postgres,hive,jdbc,mysql,ssh]==1.10.1

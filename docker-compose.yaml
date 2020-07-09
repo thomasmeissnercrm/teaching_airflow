@@ -39,6 +39,7 @@ services:
       - ./dags:/usr/local/airflow/dags
       - ./plugins:/usr/local/airflow/plugins
       - ./sql:/usr/local/airflow/sql
+      - ./req.txt:/req.txt
     ports:
       - "8080:8080"
     command: webserver
@@ -63,6 +64,8 @@ services:
       - AIRFLOW__CORE__PARALLELISM=64
       - AIRFLOW__CORE__SQL_ALCHEMY_POOL_RECYCLE=3600
       - AIRFLOW__CORE__SQL_ALCHEMY_POOL_SIZE=100
+    volumes:
+      - ./req.txt:/req.txt
     ports:
       - "5555:5555"
     command: flower
@@ -76,6 +79,7 @@ services:
       - ./dags:/usr/local/airflow/dags
       - ./plugins:/usr/local/airflow/plugins
       - ./sql:/usr/local/airflow/sql
+      - ./req.txt:/req.txt
     environment:
       - LOAD_EX=n
       - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
@@ -99,6 +103,7 @@ services:
       - ./dags:/usr/local/airflow/dags
       - ./plugins:/usr/local/airflow/plugins
       - ./sql:/usr/local/airflow/sql
+      - ./req.txt:/req.txt
     environment:
       - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
       - EXECUTOR=Celery

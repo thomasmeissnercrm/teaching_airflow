@@ -1,3 +1,6 @@
 .idea
 teaching_airflow.iml
 pgdata
+.vscode 
+airflow
+__pycache__
