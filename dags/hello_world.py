@@ -1,3 +1,13 @@
+"""
+This is test pipeline to see if airflow is working properly
+
+Data_in: None
+Data_out: None
+Depend_on: None
+@author: Rafal Chmielewski
+@team: Airflow Learning
+@stakeholders: People who learns
+"""
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.models import DAG
@@ -6,6 +16,11 @@ import logging
 
 
 def say_hello(**context):
+    """
+    Function is puting example string into task log.
+    :param context:
+    :return:
+    """
     logging.info(f'Everything Works! {datetime.datetime.now()}')
 
 
