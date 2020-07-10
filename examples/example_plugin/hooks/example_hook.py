@@ -1,4 +1,5 @@
 from airflow.hooks.base_hook import BaseHook
+import logging
 
 
 class ExampleHook(BaseHook):
@@ -10,3 +11,10 @@ class ExampleHook(BaseHook):
     def __init__(self, my_parameter, *args, **kwargs):
         self.my_parameter = my_parameter
         super(BaseHook).__init__(*args, **kwargs)
+
+    def some_mehtod(self):
+        """
+        Here explanation what method does
+        :return:
+        """
+        logging.info("I'm doing something!")
