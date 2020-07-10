@@ -18,7 +18,9 @@ services:
       - ./pgdata:/var/lib/postgresql/data/pgdata
 
   webserver:
-    image: puckel/docker-airflow:1.10.1
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: always
     depends_on:
       - postgres
@@ -39,7 +41,6 @@ services:
       - ./dags:/usr/local/airflow/dags
       - ./plugins:/usr/local/airflow/plugins
       - ./sql:/usr/local/airflow/sql
-      - ./req.txt:/req.txt
     ports:
       - "8080:8080"
     command: webserver
@@ -50,7 +51,9 @@ services:
       retries: 3
 
   flower:
-    image: puckel/docker-airflow:1.10.1
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: always
     depends_on:
       - redis
@@ -71,7 +74,9 @@ services:
     command: flower
 
   scheduler:
-    image: puckel/docker-airflow:1.10.1
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: always
     depends_on:
       - webserver
@@ -79,7 +84,6 @@ services:
       - ./dags:/usr/local/airflow/dags
       - ./plugins:/usr/local/airflow/plugins
       - ./sql:/usr/local/airflow/sql
-      - ./req.txt:/req.txt
     environment:
       - LOAD_EX=n
       - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
@@ -95,7 +99,9 @@ services:
     command: scheduler
 
   worker:
-    image: puckel/docker-airflow:1.10.1
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: always
     depends_on:
       - scheduler
@@ -103,7 +109,6 @@ services:
       - ./dags:/usr/local/airflow/dags
       - ./plugins:/usr/local/airflow/plugins
       - ./sql:/usr/local/airflow/sql
-      - ./req.txt:/req.txt
     environment:
       - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
       - EXECUTOR=Celery
