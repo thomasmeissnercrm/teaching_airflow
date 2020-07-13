@@ -69,7 +69,6 @@ services:
       - AIRFLOW__CORE__PARALLELISM=64
       - AIRFLOW__CORE__SQL_ALCHEMY_POOL_RECYCLE=3600
       - AIRFLOW__CORE__SQL_ALCHEMY_POOL_SIZE=100
-
     ports:
       - "5555:5555"
     command: flower
