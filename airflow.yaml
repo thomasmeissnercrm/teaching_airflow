@@ -8,7 +8,6 @@ services:
   postgres:
     image: postgres:9.6
     restart: always
-
     environment:
       - POSTGRES_USER=airflow
       - POSTGRES_PASSWORD=airflow
@@ -16,6 +15,8 @@ services:
       - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
       - ./pgdata:/var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
 
   webserver:
     build:
@@ -37,6 +38,7 @@ services:
       - AIRFLOW__CORE__PARALLELISM=64
       - AIRFLOW__CORE__SQL_ALCHEMY_POOL_RECYCLE=3600
       - AIRFLOW__CORE__SQL_ALCHEMY_POOL_SIZE=100
+      - AIRFLOW__WEBSERVER__DAG_DEFAULT_VIEW=graph
     volumes:
       - ./dags:/usr/local/airflow/dags
       - ./plugins:/usr/local/airflow/plugins
@@ -120,3 +122,15 @@ services:
       - AIRFLOW__CORE__SQL_ALCHEMY_POOL_RECYCLE=3600
       - AIRFLOW__CORE__SQL_ALCHEMY_POOL_SIZE=100
     command: worker
+
+  mysql:
+    image: mysql:8.0.20
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=airflow
+      - MYSQL_DATABASE=public
+      - MYSQL_USER=airflow
+      - MYSQL_PASSWORD=airflow
+    ports:
+      - "3306:3306"
