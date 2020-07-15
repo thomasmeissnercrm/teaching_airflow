@@ -1,4 +1,5 @@
 import os
+import time
 from pathlib import Path
 
 path_docker_airflow = Path('docker/airflow')
@@ -13,7 +14,7 @@ os.system(f'docker build {path_docker_airflow} -t teaching_airflow:main')
 print('Rise env')
 os.system('docker-compose -f airflow.yaml up -d')
 print('Pause for 10 - databases need to start.')
-os.wait(10)
+time.sleep(10)
 print('Load example data')
 os.system('docker run -it --rm --name my-running-script --network=teaching_airflow_default '
           '-v "$PWD":/usr/src/myapp -w /usr/src/myapp teaching_python:3 python data_loader.py')
