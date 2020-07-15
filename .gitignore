@@ -2,5 +2,5 @@
 teaching_airflow.iml
 pgdata
 .vscode 
-airflow
+/airflow
 __pycache__

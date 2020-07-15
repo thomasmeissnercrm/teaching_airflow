@@ -3,18 +3,19 @@ import pandas as pd
 import os
 
 # create list of files to import
-cwd = os.getcwd()
 table_list = []
 print('Loading list of files to upload in db.')
 for path, subdirs, files in os.walk(f'{os.getcwd()}/example_data'):
     for name in files:
+        if name == '.DS_Store':
+            pass
         data = os.path.join(path, name)
         data = data.split('/')
         system = data[-3]
         schema = data[-2]
         table = data[-1].split('.')[0]
         ext = data[-1].split('.')[-1]
-        if system != 'teaching_airflow':
+        if system not in ['teaching_airflow', 'myapp']:
             table_list.append({
                 "engine": system,
                 "schema": schema,
@@ -24,8 +25,8 @@ for path, subdirs, files in os.walk(f'{os.getcwd()}/example_data'):
 
 print(f'Load done. Found {len(table_list)} files to upload.')
 print('generating db engines')
-psql = create_engine('postgresql://airflow:airflow@localhost:5432')
-mysql = create_engine('mysql://root:airflow@127.0.0.1:3306/public')
+psql = create_engine('postgresql://airflow:airflow@teaching_airflow_postgres_1:5432')
+mysql = create_engine('mysql://root:airflow@teaching_airflow_mysql_1:3306/public')
 
 # getting list of schema in mysql
 mysql_schema = pd.read_sql('select SCHEMA_NAME AS "schema" from information_schema.SCHEMATA;', con=mysql)['schema'].to_list()
@@ -34,7 +35,7 @@ psql_schema = pd.read_sql('Select schema_name as schema from information_schema.
 print('Loading data into databases')
 
 for element in table_list:
-    df = pd.read_csv(f'{cwd}/example_data/{element["engine"]}/{element["schema"]}/{element["table"]}.{element["ext"]}')
+    df = pd.read_csv(f'{os.getcwd()}/example_data/{element["engine"]}/{element["schema"]}/{element["table"]}.{element["ext"]}')
     db_engine = psql if element['engine'] == 'psql' else mysql
     if element['engine'] == 'mysql':
         if element["schema"] not in mysql_schema:

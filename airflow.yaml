@@ -19,9 +19,7 @@ services:
       - "5432:5432"
 
   webserver:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: teaching_airflow:main
     restart: always
     depends_on:
       - postgres
@@ -53,9 +51,7 @@ services:
       retries: 3
 
   flower:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: teaching_airflow:main
     restart: always
     depends_on:
       - redis
@@ -74,9 +70,7 @@ services:
     command: flower
 
   scheduler:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: teaching_airflow:main
     restart: always
     depends_on:
       - webserver
@@ -99,9 +93,7 @@ services:
     command: scheduler
 
   worker:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: teaching_airflow:main
     restart: always
     depends_on:
       - scheduler
