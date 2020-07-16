@@ -1,12 +1,16 @@
-version: '3.1'
+version: '3.5'
 
 services:
   redis:
     image: 'redis:3.2.7'
+    networks:
+      - airflow_network
     restart: always
 
   postgres:
     image: postgres:9.6
+    networks:
+      - airflow_network
     restart: always
     environment:
       - POSTGRES_USER=airflow
@@ -20,6 +24,8 @@ services:
 
   webserver:
     image: teaching_airflow:main
+    networks:
+      - airflow_network
     restart: always
     depends_on:
       - postgres
@@ -52,6 +58,8 @@ services:
 
   flower:
     image: teaching_airflow:main
+    networks:
+      - airflow_network
     restart: always
     depends_on:
       - redis
@@ -71,6 +79,8 @@ services:
 
   scheduler:
     image: teaching_airflow:main
+    networks:
+      - airflow_network
     restart: always
     depends_on:
       - webserver
@@ -94,6 +104,8 @@ services:
 
   worker:
     image: teaching_airflow:main
+    networks:
+      - airflow_network
     restart: always
     depends_on:
       - scheduler
@@ -116,6 +128,8 @@ services:
 
   mysql:
     image: mysql:8.0.20
+    networks:
+      - airflow_network
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
@@ -128,6 +142,8 @@ services:
 
   sftp:
     image: stilliard/pure-ftpd
+    networks:
+      - airflow_network
     ports:
       - "21:21"
       - "30000-30009:30000-30009"
@@ -140,3 +156,8 @@ services:
       FTP_USER_PASS: airflow
       FTP_USER_HOME: /home/airflow
     restart: always
+
+networks:
+  airflow_network:
+    name: airflow_network
+    driver: bridge
