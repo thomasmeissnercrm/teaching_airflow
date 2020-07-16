@@ -4,3 +4,4 @@ pgdata
 .vscode 
 /airflow
 __pycache__
+.DS_Store
