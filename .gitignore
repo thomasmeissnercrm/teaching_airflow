@@ -5,3 +5,4 @@ pgdata
 /airflow
 __pycache__
 .DS_Store
+/airflow_env
