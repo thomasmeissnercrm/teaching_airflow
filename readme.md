@@ -11,7 +11,7 @@ by anyone who wants how to code pipelines in Airflow
 
 ### Using repository
 To start using repository just go in your terminal to folder when project was
-cloned and type ```python3 teach_aiflow.py```  
+cloned and type <br/> ```python3 teach_aiflow.py```  
 What gonna happen:  
 * Docker will build all needed images
 * By Docker Compose a local cluster will be raised
@@ -23,7 +23,7 @@ What gonna happen:
 If for command ```docker ps``` you get error that cannot connect to docker engine
 please try to run it with ```sudo```. If that work all commands here should be run with sudo as well.
 ### Additional commands
-all should be run as ```python3 teach_airflow <argument>```
+all should be run as ```python3 teach_airflow.py <argument>```
 ```
   --reload_data  Reload data in all databases
   --start        Start airflow docker containers
