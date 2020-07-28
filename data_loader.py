@@ -7,7 +7,7 @@ table_list = []
 print('Loading list of files to upload in db.')
 for path, subdirs, files in os.walk(f'{os.getcwd()}/example_data'):
     for name in files:
-        if name == '.DS_Store':
+        if name in ['.DS_Store', 'readme']:
             pass
         data = os.path.join(path, name)
         data = data.split('/')
