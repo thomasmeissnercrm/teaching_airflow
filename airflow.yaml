@@ -44,6 +44,15 @@ services:
       - AIRFLOW__CORE__SQL_ALCHEMY_POOL_RECYCLE=3600
       - AIRFLOW__CORE__SQL_ALCHEMY_POOL_SIZE=100
       - AIRFLOW__WEBSERVER__DAG_DEFAULT_VIEW=graph
+      - AIRFLOW__CELERY__DEFAULT_QUEUE=default
+      - AIRFLOW__CELERY__CELERY_APP_NAME=airflow.executors.celery_executor
+      - AIRFLOW__CELERY__CELERY_CONFIG_OPTIONS=airflow.config_templates.default_celery.DEFAULT_CELERY_CONFIG
+      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@postgres:5432/
+      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/1
+      - AIRFLOW__CORE__DAGS_FOLDER=/usr/local/airflow/dags
+      - AIRFLOW__CORE__BROKER_URL=redis://redis:6379/1
+      - AIRFLOW__CORE__CELERY_RESULT_BACKEND=rdb+postgresql://airflow:airflow@postgres:5432/airflow
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
     volumes:
       - ./dags:/usr/local/airflow/dags
       - ./plugins:/usr/local/airflow/plugins
@@ -66,7 +75,10 @@ services:
       - redis
     environment:
       - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+      - LOAD_EX=n
+      - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
       - EXECUTOR=Celery
+      - AIRFLOW__WEBSERVER__WORKERS=2
       - AIRFLOW__CELERY__WORKER_CONCURRENCY=8
       - AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS=False
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
@@ -74,6 +86,16 @@ services:
       - AIRFLOW__CORE__PARALLELISM=32
       - AIRFLOW__CORE__SQL_ALCHEMY_POOL_RECYCLE=3600
       - AIRFLOW__CORE__SQL_ALCHEMY_POOL_SIZE=100
+      - AIRFLOW__WEBSERVER__DAG_DEFAULT_VIEW=graph
+      - AIRFLOW__CELERY__DEFAULT_QUEUE=default
+      - AIRFLOW__CELERY__CELERY_APP_NAME=airflow.executors.celery_executor
+      - AIRFLOW__CELERY__CELERY_CONFIG_OPTIONS=airflow.config_templates.default_celery.DEFAULT_CELERY_CONFIG
+      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@postgres:5432/
+      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/1
+      - AIRFLOW__CORE__DAGS_FOLDER=/usr/local/airflow/dags
+      - AIRFLOW__CORE__BROKER_URL=redis://redis:6379/1
+      - AIRFLOW__CORE__CELERY_RESULT_BACKEND=rdb+postgresql://airflow:airflow@postgres:5432/airflow
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
     ports:
       - "5555:5555"
     command: flower
@@ -94,6 +116,7 @@ services:
       - LOAD_EX=n
       - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
       - EXECUTOR=Celery
+      - AIRFLOW__WEBSERVER__WORKERS=2
       - AIRFLOW__CELERY__WORKER_CONCURRENCY=8
       - AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS=False
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
@@ -101,6 +124,16 @@ services:
       - AIRFLOW__CORE__PARALLELISM=32
       - AIRFLOW__CORE__SQL_ALCHEMY_POOL_RECYCLE=3600
       - AIRFLOW__CORE__SQL_ALCHEMY_POOL_SIZE=100
+      - AIRFLOW__WEBSERVER__DAG_DEFAULT_VIEW=graph
+      - AIRFLOW__CELERY__DEFAULT_QUEUE=default
+      - AIRFLOW__CELERY__CELERY_APP_NAME=airflow.executors.celery_executor
+      - AIRFLOW__CELERY__CELERY_CONFIG_OPTIONS=airflow.config_templates.default_celery.DEFAULT_CELERY_CONFIG
+      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@postgres:5432/
+      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/1
+      - AIRFLOW__CORE__DAGS_FOLDER=/usr/local/airflow/dags
+      - AIRFLOW__CORE__BROKER_URL=redis://redis:6379/1
+      - AIRFLOW__CORE__CELERY_RESULT_BACKEND=rdb+postgresql://airflow:airflow@postgres:5432/airflow
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
     command: scheduler
 
   worker:
@@ -116,8 +149,10 @@ services:
       - ./sql:/usr/local/airflow/sql
     environment:
       - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+      - LOAD_EX=n
       - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
       - EXECUTOR=Celery
+      - AIRFLOW__WEBSERVER__WORKERS=2
       - AIRFLOW__CELERY__WORKER_CONCURRENCY=8
       - AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS=False
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
@@ -125,6 +160,16 @@ services:
       - AIRFLOW__CORE__PARALLELISM=32
       - AIRFLOW__CORE__SQL_ALCHEMY_POOL_RECYCLE=3600
       - AIRFLOW__CORE__SQL_ALCHEMY_POOL_SIZE=100
+      - AIRFLOW__WEBSERVER__DAG_DEFAULT_VIEW=graph
+      - AIRFLOW__CELERY__DEFAULT_QUEUE=default
+      - AIRFLOW__CELERY__CELERY_APP_NAME=airflow.executors.celery_executor
+      - AIRFLOW__CELERY__CELERY_CONFIG_OPTIONS=airflow.config_templates.default_celery.DEFAULT_CELERY_CONFIG
+      - AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@postgres:5432/
+      - AIRFLOW__CELERY__BROKER_URL=redis://redis:6379/1
+      - AIRFLOW__CORE__DAGS_FOLDER=/usr/local/airflow/dags
+      - AIRFLOW__CORE__BROKER_URL=redis://redis:6379/1
+      - AIRFLOW__CORE__CELERY_RESULT_BACKEND=rdb+postgresql://airflow:airflow@postgres:5432/airflow
+      - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
     command: worker
 
   mysql:
@@ -151,10 +196,10 @@ services:
       - "21:21"
       - "30000-30009:30000-30009"
     volumes:
-      - "./ftp/data:/home/airflow/"
+      - "./ftp/data/:/home/airflow/"
       - "./ftp/passwd:/etc/pure-ftpd/passwd"
     environment:
-      PUBLICHOST: "localhost"
+      PUBLICHOST: "0.0.0.0"
       FTP_USER_NAME: airflow
       FTP_USER_PASS: airflow
       FTP_USER_HOME: /home/airflow
@@ -163,4 +208,3 @@ services:
 networks:
   airflow_network:
     name: airflow_network
-    driver: bridge

@@ -1,16 +1,16 @@
 from airflow.operators import BaseOperator
 from airflow.exceptions import AirflowException
 from postgres_extended_plugin.hooks.postgres_extended_hook import PostgresExtendedHook
-from airflow.contrib.hooks.sftp_hook import SFTPHook
+from airflow.contrib.hooks.ftp_hook import FTPHook
 import logging
-from tempfile import TemporaryFile
+from tempfile import NamedTemporaryFile
 
 
-class PostgresSftpOperator(BaseOperator):
+class PostgresFtpOperator(BaseOperator):
     """
     Operator is responsible for dumping data from postgres into file on sftp server.
 
-    :param psql_conn_id -> str - connection id for Postgres DB in Airflow
+    :param postgres_conn_id -> str - connection id for Postgres DB in Airflow
     :param sftp_conn_id -> str - connection id for SFTP in Airflow
     :param sql -> str - sql query or path to file with it
     :param file_desc -> dict - Python dictionary that include name and format of file ex.
@@ -19,23 +19,22 @@ class PostgresSftpOperator(BaseOperator):
             "format" "csv" or "parquet"
             }
     """
-    template_ext = ('.sql',)
-    template_fields = ['sql']
-    ui_color = '#badd99'
+    template_fields = ('sql',)
+    template_ext = ('.sql', )
+    ui_color = '#ffad33'
 
     def __init__(self,
-                 psql_conn_id: str,
+                 postgres_conn_id: str,
                  sftp_conn_id: str,
                  sql: str,
                  file_desc: dict,
                  *args,
                  **kwargs):
-        self.psql_conn_id = psql_conn_id,
-        self.sftp_conn_id = sftp_conn_id,
         self.sql = sql
+        self.postgres_conn_id = postgres_conn_id
+        self.sftp_conn_id = sftp_conn_id
         self.file_desc = file_desc
-        self.file_desc = self.validate_file_desc()
-        super(BaseOperator).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def validate_file_desc(self):
         """
@@ -60,17 +59,22 @@ class PostgresSftpOperator(BaseOperator):
         :return: none
         """
         logging.info(f'Preparing dataframe...')
-        df = PostgresExtendedHook(self.psql_conn_id).get_pandas_df(sql=self.sql)
+        psql_hook = PostgresExtendedHook().get_hook(self.postgres_conn_id)
+        df = psql_hook.get_pandas_df(sql=self.sql)
         logging.info('Writing data into temp file')
-        with TemporaryFile() as f:
+        with NamedTemporaryFile() as f:
             if self.file_desc['format'].lower() == 'csv':
-                df.to_csv(f, sep=';', quotechar='|')
+                df.to_csv(f.name, sep=';', quotechar='|')
             if self.file_desc['format'].lower() == 'parquet':
-                df.to_parquet(f, engine='pyarrow')
+                df.to_parquet(f.name, engine='pyarrow')
             try:
-                logging.info('Sending file to SFTP')
-                sftp_connection = SFTPHook(self.sftp_conn_id).get_conn()
-                sftp_connection.put(localpath=f.name,
-                                    remotepath=f'/{self.file_desc["name"]}.{self.file_desc["format"]}')
+                logging.info('Sending file to FTP')
+                print(self.sftp_conn_id)
+                ftp_hook = FTPHook(ftp_conn_id=self.sftp_conn_id)
+                conn = ftp_hook.get_conn()
+                f.flush()
+                conn.set_pasv(False)
+                conn.storbinary(f'STOR {self.file_desc["name"]}.{self.file_desc["format"]}', open(f.name, 'rb'), 1)
+
             except Exception as ex:
                 raise AirflowException(f'Could not put file on SFTP. Details {ex}')

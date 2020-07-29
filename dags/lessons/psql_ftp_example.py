@@ -5,7 +5,7 @@ Data_in:
     Postgres:
         - other.netflix_titles
 Data_out:
-    SFTP:
+    fFTP:
         - generated_file.csv
         - generated_file.parquet
 Depend_on: None
@@ -13,14 +13,14 @@ Depend_on: None
 @team: Airflow Learning
 @stakeholders: People who learns
 """
-from postgres_extended_plugin.operators.postgres_sftp_operator import PostgresSftpOperator
+from postgres_extended_plugin.operators.postgres_ftp_operator import PostgresFtpOperator
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.models import DAG
 import datetime
 
 
 dag = DAG(
-    dag_id='psql_sftp_example',
+    dag_id='psql_fftp_example',
     schedule_interval=None,
     start_date=datetime.datetime(2020, 1, 1),
     default_args={"owner": "airflow_lesson"}
@@ -31,10 +31,10 @@ start = DummyOperator(
     dag=dag
 )
 
-generate_csv = PostgresSftpOperator(
+generate_csv = PostgresFtpOperator(
     task_id='generate_csv',
-    psql_conn_id='airflow_psql',
-    sftp_conn_id='local_sftp',
+    postgres_conn_id='airflow_docker_db',
+    sftp_conn_id='local_ftp',
     file_desc={
         "name": "generated_file",
         "format": "csv"
@@ -43,10 +43,10 @@ generate_csv = PostgresSftpOperator(
     dag=dag
 )
 
-generate_parquet = PostgresSftpOperator(
+generate_parquet = PostgresFtpOperator(
     task_id='generate_parquet',
-    psql_conn_id='airflow_psql',
-    sftp_conn_id='local_sftp',
+    postgres_conn_id='airflow_docker_db',
+    sftp_conn_id='local_ftp',
     file_desc={
         "name": "generated_file",
         "format": "parquet"

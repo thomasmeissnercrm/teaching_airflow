@@ -1,19 +1,21 @@
 from airflow.hooks.postgres_hook import PostgresHook
+from airflow.exceptions import AirflowException
 from contextlib import closing
+import logging
 import sys
+import pandas as pd
 
 
 class PostgresExtendedHook(PostgresHook):
+    conn_name_attr = 'postgres_conn_id'
+    default_conn_name = 'postgres_default'
+    supports_autocommit = True
 
-    def __init__(self, conn_id, *args, **kwargs):
-        """
-        Hook is responsible for interacting with PostgreSql database.
-        :param conn_id: str -> Connection ID registered in airflow
-        :param args:
-        :param kwargs:
-        """
-        self.conn_id = conn_id
-        super(PostgresHook).__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super(PostgresExtendedHook, self).__init__(*args, **kwargs)
+        if 'conn_name_attr' in kwargs and kwargs['conn_name_attr'] in kwargs:
+            self.postgres_conn_id = kwargs[kwargs['conn_name_attr']]
+            logging.debug(f"+++ Override postgres_conn_id with {self.postgres_conn_id}")
 
     def get_pandas_df(self, sql, parameters=None, chunk_size=None):
         """
@@ -23,9 +25,10 @@ class PostgresExtendedHook(PostgresHook):
         :param chunk_size: how many records (maximum) each df should posses in return.
         :return:
         """
-        if sys.version_info[0] < 3:
-            sql = sql.encode('utf-8')
-        import pandas.io.sql as psql
+        logging.info(f"getting postgres engine: {self.get_sqlalchemy_engine()} with uri: {self.get_uri()}")
 
-        with closing(self.get_conn()) as conn:
-            return psql.read_sql(sql, con=conn, chunksize=chunk_size, params=parameters)
+        try:
+            df = pd.read_sql(sql, self.get_sqlalchemy_engine(), chunksize=chunk_size)
+        except Exception as ex:
+            raise AirflowException(f"Get pandas df from sql statement: {sql} has failed with exception : {ex}")
+        return df
