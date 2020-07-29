@@ -67,6 +67,13 @@ def full_build():
     airflow_start()
     print('Waiting 60 seconds for databases to start')
     time.sleep(60)
+    print('Remove all connections')
+    os.system("docker container exec -it teaching_airflow_webserver_1 "
+              "sh -c 'psql postgresql://airflow:airflow@postgres:5432/airflow -c "
+              "\"truncate public.connection;\"'")
+    print('Add connection to Postgres DB')
+    os.system('docker container exec -it teaching_airflow_webserver_1 '
+              'sh -c "airflow connections -a --conn_id=airflow_psql --conn_uri=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow"')
     reload_data()
     add_virtual_env()
 

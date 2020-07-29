@@ -31,6 +31,7 @@ services:
       - postgres
       - redis
     environment:
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
       - LOAD_EX=n
       - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
       - EXECUTOR=Celery
@@ -64,6 +65,7 @@ services:
     depends_on:
       - redis
     environment:
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
       - EXECUTOR=Celery
       - AIRFLOW__CELERY__WORKER_CONCURRENCY=8
       - AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS=False
@@ -88,6 +90,7 @@ services:
       - ./plugins:/usr/local/airflow/plugins
       - ./sql:/usr/local/airflow/sql
     environment:
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
       - LOAD_EX=n
       - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
       - EXECUTOR=Celery
@@ -112,6 +115,7 @@ services:
       - ./plugins:/usr/local/airflow/plugins
       - ./sql:/usr/local/airflow/sql
     environment:
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
       - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
       - EXECUTOR=Celery
       - AIRFLOW__CELERY__WORKER_CONCURRENCY=8
