@@ -7,7 +7,7 @@ table_list = []
 print('Loading list of files to upload in db.')
 for path, subdirs, files in os.walk(f'{os.getcwd()}/example_data'):
     for name in files:
-        if name in ['.DS_Store', 'readme']:
+        if name in ['.DS_Store']:
             pass
         data = os.path.join(path, name)
         data = data.split('/')
@@ -15,7 +15,7 @@ for path, subdirs, files in os.walk(f'{os.getcwd()}/example_data'):
         schema = data[-2]
         table = data[-1].split('.')[0]
         ext = data[-1].split('.')[-1]
-        if system not in ['teaching_airflow', 'myapp']:
+        if system not in ['teaching_airflow', 'myapp'] and table not in ['readme']:
             table_list.append({
                 "engine": system,
                 "schema": schema,
