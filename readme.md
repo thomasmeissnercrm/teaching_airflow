@@ -65,4 +65,26 @@ http://localhost:5555
     * password: airflow
     * host: localhost
     * port: 21
-    
+
+
+### Connecting to extra services from Airflow
+
+#### Postgres
+    * login: airflow
+    * password: airflow
+    * database: airflow
+    * host: postgres
+    * port: 5432
+
+#### MySql
+    * login: airflow
+    * password: airflow
+    * database: public
+    * host: mysql
+    * port: 3306
+
+#### SFTP
+    * username: airflow
+    * password: airflow
+    * host: sftp
+    * port: 21
