@@ -35,3 +35,26 @@ all should be run as ```python3 teach_airflow.py <argument>```
   --add_vir_env  Add virtual env
   --rm_vir_env   Remove virtual env
 ```
+
+
+### Connecting to extra services from PC level
+
+#### Postgres
+    * login: airflow
+    * password: airflow
+    * database: airflow
+    * host: localhost
+    * port: 5433
+
+#### MySql
+    * login: airflow
+    * password: airflow
+    * database: public
+    * host: localhost
+    * port: 3307
+
+#### SFTP
+    * username: airflow
+    * password: airflow
+    * port: 21
+    
