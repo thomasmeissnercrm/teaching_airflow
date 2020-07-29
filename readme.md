@@ -29,6 +29,7 @@ all should be run as ```python3 teach_airflow.py <argument>```
   --reload_data  Reload data in all databases
   --start        Start airflow docker containers
   --stop         Stop airflow docker containers
+  --restart      Restart airflow docker containers
   --remove       Delete all docker images, containers
   --rebuild      Rebuild airflow env
   --add_vir_env  Add virtual env

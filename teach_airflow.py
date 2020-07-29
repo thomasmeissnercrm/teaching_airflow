@@ -14,6 +14,7 @@ passer = argparse.ArgumentParser(description="Control Airflow local ENV")
 passer.add_argument('--reload_data', action='store_true', help='Reload data in all databases')
 passer.add_argument('--start', action='store_true', help='Start airflow docker containers')
 passer.add_argument('--stop', action='store_true', help='Stop airflow docker containers')
+passer.add_argument('--restart', action='store_true', help='Restart airflow docker containers')
 passer.add_argument('--remove', action='store_true', help='Delete all docker images, containers')
 passer.add_argument('--rebuild', action='store_true', help='Rebuild airflow env')
 passer.add_argument('--add_vir_env', action='store_true', help='Add virtual env')
@@ -37,6 +38,11 @@ def airflow_start():
 def airflow_stop():
     print('Stopping Airflow env.')
     os.system('docker-compose -f airflow.yaml down')
+
+
+def airflow_restart():
+    print('Restarting docker containers')
+    os.system('docker container restart teaching_airflow_webserver_1 teaching_airflow_scheduler_1 teaching_airflow_worker_1')
 
 
 def airflow_build():
@@ -88,6 +94,8 @@ if arguments.start:
     airflow_start()
 if arguments.stop:
     airflow_stop()
+if arguments.restart:
+    airflow_restart()
 if arguments.remove:
     remove_airflow()
 if arguments.rebuild:
