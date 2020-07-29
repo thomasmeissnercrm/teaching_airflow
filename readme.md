@@ -63,5 +63,6 @@ http://localhost:5555
 #### SFTP
     * username: airflow
     * password: airflow
+    * host: localhost
     * port: 21
     
