@@ -7,8 +7,21 @@ from tempfile import TemporaryFile
 
 
 class PostgresSftpOperator(BaseOperator):
+    """
+    Operator is responsible for dumping data from postgres into file on sftp server.
+
+    :param psql_conn_id -> str - connection id for Postgres DB in Airflow
+    :param sftp_conn_id -> str - connection id for SFTP in Airflow
+    :param sql -> str - sql query or path to file with it
+    :param file_desc -> dict - Python dictionary that include name and format of file ex.
+            file_desc = {
+            "name": "my_file_name",
+            "format" "csv" or "parquet"
+            }
+    """
     template_ext = ('.sql',)
     template_fields = ['sql']
+    ui_color = '#badd99'
 
     def __init__(self,
                  psql_conn_id: str,
@@ -25,12 +38,27 @@ class PostgresSftpOperator(BaseOperator):
         super(BaseOperator).__init__(*args, **kwargs)
 
     def validate_file_desc(self):
-        if 'name' in self.file_desc.keys() and 'format' in self.file_desc.keys():
-            return {"name": self.file_desc['name'], "format": self.file_desc['format']}
-        else:
+        """
+        Function is validating if file_desc dictionary contain required data. If not it raise AirflowException
+        :return: dict
+        """
+        if 'name' not in self.file_desc.keys() or 'format' not in self.file_desc.keys():
             raise AirflowException('file_desc does not have required keys: name, format')
+        elif self.file_desc['format'].lower() not in ['csv', 'parquet']:
+            raise AirflowException('file_desc have incorrect format type: csv, parquet')
+        else:
+            return {"name": self.file_desc['name'], "format": self.file_desc['format']}
 
     def execute(self, context):
+        """
+        Main execution point. Steps that are done
+            1) connecting to Postgres DB
+            2) queering DB and pull data into pandas dataframe
+            3) dump data from dataframe into file
+            4) send file on SFTP server.
+        :param context:
+        :return: none
+        """
         logging.info(f'Preparing dataframe...')
         df = PostgresExtendedHook(self.psql_conn_id).get_pandas_df(sql=self.sql)
         logging.info('Writing data into temp file')
