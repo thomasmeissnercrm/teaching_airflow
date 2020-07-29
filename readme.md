@@ -36,6 +36,13 @@ all should be run as ```python3 teach_airflow.py <argument>```
   --rm_vir_env   Remove virtual env
 ```
 
+### Connecting to UI interface - no password required
+
+### Airflow
+http://localhost:8080
+
+### Flower/Celery
+http://localhost:5555
 
 ### Connecting to extra services from PC level
 
