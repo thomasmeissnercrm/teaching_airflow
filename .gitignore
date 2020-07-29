@@ -1,8 +1,9 @@
 .idea
 teaching_airflow.iml
-pgdata
+/pgdata
 .vscode 
 /airflow
 __pycache__
 .DS_Store
 /airflow_env
+/mysql_data

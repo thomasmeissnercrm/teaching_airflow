@@ -134,6 +134,8 @@ services:
       - MYSQL_DATABASE=public
       - MYSQL_USER=airflow
       - MYSQL_PASSWORD=airflow
+    volumes:
+    - ./mysql_data:/var/lib/mysql
     ports:
       - "3307:3306"
 
