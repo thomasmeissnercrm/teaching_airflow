@@ -7,7 +7,8 @@ by anyone who wants how to code pipelines in Airflow
 * Python 3.6 or higher https://www.python.org/
 * Docker https://docs.docker.com/get-docker/
 * Docker Compose https://docs.docker.com/compose/install/
-* MySql client (ubuntu: ``sudo apt-get install libmysqlclient-dev``, mac: ```brew install mysql```) 
+* MySql client (ubuntu: ``sudo apt-get install libmysqlclient-dev``, mac: ```brew install mysql```)
+* ONlY on Mac - Developer tools  ```xcode-select --install``` 
 
 ### Using repository
 To start using repository just go in your terminal to folder when project was
