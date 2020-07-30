@@ -73,7 +73,7 @@ def full_build():
               "\"truncate public.connection;\"'")
     print('Add connection to Postgres DB')
     os.system('docker container exec -it teaching_airflow_webserver_1 '
-              'sh -c "airflow connections -a --conn_id=airflow_psql --conn_uri=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow"')
+              'sh -c "airflow connections -a --conn_id=airflow_docker_db --conn_uri=postgresql://airflow:airflow@postgres:5432/airflow"')
     reload_data()
     add_virtual_env()
 
