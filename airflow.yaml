@@ -170,7 +170,7 @@ services:
       - AIRFLOW__CORE__BROKER_URL=redis://redis:6379/1
       - AIRFLOW__CORE__CELERY_RESULT_BACKEND=rdb+postgresql://airflow:airflow@postgres:5432/airflow
       - AIRFLOW__CORE__EXECUTOR=CeleryExecutor
-    command: worker
+    command: worker -q default,secret
 
   mysql:
     image: mysql:8.0.20
