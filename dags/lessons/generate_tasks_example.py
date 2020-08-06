@@ -9,7 +9,7 @@ dag = DAG(
     dag_id='generate_task_example',
     schedule_interval=None,
     start_date=datetime(2020, 1, 1),
-    default_args={"owner": "learning_airflow"}
+    default_args={"owner": "airflow_lesson"}
 )
 
 start = DummyOperator(
