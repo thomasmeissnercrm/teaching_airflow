@@ -1,5 +1,4 @@
 from airflow.operators.dummy_operator import DummyOperator
-from airflow.operators.postgres_operator import PostgresOperator
 from airflow.models import DAG, Variable, datetime
 
 
