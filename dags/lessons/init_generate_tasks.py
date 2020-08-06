@@ -36,10 +36,10 @@ def generate_init():
 
 
 dag = DAG(
-    dag_id='many_tasks_example',
+    dag_id='init_generate_tasks_example',
     schedule_interval=None,
     start_date=datetime(2020, 1, 1),
-    default_args={"owner": "learning_airflow"}
+    default_args={"owner": "airflow_lesson"}
 )
 start = DummyOperator(
     task_id='start',

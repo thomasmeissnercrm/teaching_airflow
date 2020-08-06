@@ -85,7 +85,8 @@ def rebuild():
 
 def add_virtual_env():
     print('Creating virtual env')
-    venv.create(Path('airflow_env'), with_pip=True)
+    # venv.create(Path('airflow_env'), with_pip=True)
+    os.system('python3 -m venv airflow_env')
     os.system(f'. airflow_env/bin/activate && pip install -r {path_docker_airflow}/python_req.txt')
     os.system(f'. airflow_env/bin/activate && AIRFLOW_GPL_UNIDECODE=yes pip install apache-airflow[s3,async,kubernetes,slack,ssh,redis,postgres,hive,mysql,gcp]==1.10.1')
 
