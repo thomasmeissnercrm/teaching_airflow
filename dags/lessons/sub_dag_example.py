@@ -1,9 +1,25 @@
+"""
+This pipeline shows how sub dags are created.
+
+Data_in: None
+Data_out: None
+Depend_on: None
+@author: Rafal Chmielewski
+@team: Airflow Learning
+@stakeholders: People who learns
+"""
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.subdag_operator import SubDagOperator
 from airflow.models import DAG, datetime
 
 
 def prepare_sub_dag(parent_dag, child_dag):
+    """
+    Preparing sub dag based on parent
+    :param parent_dag:
+    :param child_dag:
+    :return:
+    """
     sub_dag = DAG(
         dag_id=f'{parent_dag}.{child_dag}',
         start_date=datetime(2020, 1, 1),

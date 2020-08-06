@@ -1,3 +1,15 @@
+"""
+This pipeline shows how generate task based on variable.
+
+Data_in:
+    Postgres:
+        - other schema
+Data_out: None
+Depend_on: init_generate_tasks.py
+@author: Rafal Chmielewski
+@team: Airflow Learning
+@stakeholders: People who learns
+"""
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.postgres_operator import PostgresOperator
 from airflow.models import DAG, Variable, datetime

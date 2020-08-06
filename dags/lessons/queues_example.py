@@ -1,8 +1,16 @@
+"""
+This pipeline shows how work with queues.
+
+Data_out: None
+Depend_on: None
+@author: Rafal Chmielewski
+@team: Airflow Learning
+@stakeholders: People who learns
+"""
+
 from airflow.operators.dummy_operator import DummyOperator
-from airflow.models import DAG, Variable, datetime
+from airflow.models import DAG, datetime
 
-
-GENERAL_VAR = Variable.get('generate_tasks', deserialize_json=True)
 
 dag = DAG(
     dag_id='queues_example',

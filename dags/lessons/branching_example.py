@@ -1,3 +1,13 @@
+"""
+This pipeline example how branching operator works.
+
+Data_in: None
+Data_out: None
+Depend_on: None
+@author: Rafal Chmielewski
+@team: Airflow Learning
+@stakeholders: People who learns
+"""
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import BranchPythonOperator
 from airflow.models import DAG, datetime
@@ -5,6 +15,10 @@ from random import choice
 
 
 def make_choice():
+    """
+    Function is choosing random path for run
+    :return:
+    """
     options = ['task_1', 'task2', 'task_3']
     return choice(options)
 

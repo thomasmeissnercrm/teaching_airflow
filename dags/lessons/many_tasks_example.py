@@ -1,3 +1,13 @@
+"""
+This pipeline example generate and how looks like pipeline with lot of tasks.
+
+Data_in: None
+Data_out: None
+Depend_on: None
+@author: Rafal Chmielewski
+@team: Airflow Learning
+@stakeholders: People who learns
+"""
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.models import DAG
 import datetime

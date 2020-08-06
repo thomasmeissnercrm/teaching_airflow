@@ -1,3 +1,18 @@
+"""
+This pipeline shows how use xcoms in Airflow.
+
+Data_in:
+    Postgres:
+        - europe.close_relations_2015
+        - europe.gdp_2016
+        - europe.low_savings_2016
+
+Data_out: None
+Depend_on: None
+@author: Rafal Chmielewski
+@team: Airflow Learning
+@stakeholders: People who learns
+"""
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.postgres_operator import PostgresOperator
 from airflow.operators.python_operator import PythonOperator
@@ -7,15 +22,30 @@ import logging
 
 
 def python_xcom(**context):
+    """
+    generate xcom by return statement.
+    :param context:
+    :return:
+    """
     return 'europe.close_relations_2015'
 
 
 def python_xcom2(**context):
+    """
+    Push xcom using function
+    :param context:
+    :return:
+    """
     ti = context['ti']
     ti.xcom_push(key='my_xcom', value='europe.gdp_2016')
 
 
 def get_xcom(**context):
+    """
+    retrieving xcom in python operator
+    :param context:
+    :return:
+    """
     ti = context['ti']
     data = ti.xcom_pull(task_ids='xcom_from_bash', key='return_value')
     logging.info(data)
@@ -40,7 +70,7 @@ end = DummyOperator(
 
 ex1 = BashOperator(
     task_id='xcom_from_bash',
-    bash_command="echo 'public.low_savings_2016' ",
+    bash_command="echo 'europe.low_savings_2016' ",
     xcom_push=True,
     dag=dag
 )

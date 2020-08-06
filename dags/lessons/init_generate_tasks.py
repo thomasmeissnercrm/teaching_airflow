@@ -1,3 +1,15 @@
+"""
+This pipeline initialise base data for generate_tasks_example.py .
+
+Data_in:
+    Postgres:
+        - other schema
+Data_out: None
+Depend_on: None
+@author: Rafal Chmielewski
+@team: Airflow Learning
+@stakeholders: People who learns
+"""
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.hooks.postgres_hook import PostgresHook
@@ -8,6 +20,12 @@ import pandas as pd
 
 
 def generate_init():
+    """
+    Function is checking names of tables in postgres other.
+    Then information is combined with standard params and pushed as Airflow Variable object.
+    Also pool is created.
+    :return:
+    """
     psql_hook = PostgresHook('airflow_docker_db')
     eng = psql_hook.get_sqlalchemy_engine()
     df = pd.read_sql("select table_name from information_schema.tables where table_schema='other';",

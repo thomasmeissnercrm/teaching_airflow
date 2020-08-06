@@ -1,3 +1,13 @@
+"""
+This pipeline shows how templating works.
+
+Data_in: None
+Data_out: None
+Depend_on: None
+@author: Rafal Chmielewski
+@team: Airflow Learning
+@stakeholders: People who learns
+"""
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.postgres_operator import PostgresOperator
 from airflow.operators.python_operator import PythonOperator
@@ -8,6 +18,11 @@ table = 'public.log'
 
 
 def fn_generate_xcom(**context):
+    """
+    generate xcom by xcom_push function
+    :param context:
+    :return:
+    """
     ti = context['ti']
     ti.xcom_push(key='my_xcom', value='2+2')
 
