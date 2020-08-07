@@ -31,15 +31,6 @@ def generate_init():
     df = pd.read_sql("select table_name from information_schema.tables where table_schema='other';",
                      con=eng)
     table_list = df['table_name'].tolist()
-    init_data= {
-        'psql_conn_id': 'airflow_docker_db',
-        'table_list': table_list,
-        'pool': 'generate_tasks'
-    }
-    try:
-        Variable.set(key='generate_tasks', value=init_data, serialize_json=True)
-    except Exception as ex:
-        logging.info(f'Could not set global variable. Details: {ex}')
 
     try:
         pool = Pool()
@@ -51,6 +42,16 @@ def generate_init():
         session.commit()
     except Exception as ex:
         logging.info(f'Could not set pool. Details: {ex}')
+
+        init_data= {
+            'psql_conn_id': 'airflow_docker_db',
+            'table_list': table_list,
+            'pool': 'generate_tasks'
+        }
+    try:
+        Variable.set(key='generate_tasks', value=init_data, serialize_json=True)
+    except Exception as ex:
+        logging.info(f'Could not set global variable. Details: {ex}')
 
 
 dag = DAG(
