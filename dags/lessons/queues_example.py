@@ -24,6 +24,11 @@ start = DummyOperator(
     dag=dag
 )
 
+end = DummyOperator(
+    task_id='end',
+    dag=dag
+)
+
 t1 = DummyOperator(
     task_id='default_queue',
     queue='default',
@@ -38,11 +43,6 @@ t2 = DummyOperator(
 t3 = DummyOperator(
     task_id='secret_queue',
     queue='secret',
-    dag=dag
-)
-
-end = DummyOperator(
-    task_id='end',
     dag=dag
 )
 
