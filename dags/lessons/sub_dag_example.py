@@ -25,24 +25,24 @@ def prepare_sub_dag(parent_dag, child_dag):
         start_date=datetime(2020, 1, 1),
         schedule_interval=None,
     )
-    with sub_dag:
-        t1 = DummyOperator(
-            task_id=f'sub_dag_task1',
-            dag=sub_dag,
-        )
-        t2 = DummyOperator(
-            task_id=f'sub_dag_task2',
-            dag=sub_dag,
-        )
-        t3 = DummyOperator(
-            task_id=f'sub_dag_task3',
-            dag=sub_dag,
-        )
-        t4 = DummyOperator(
-            task_id=f'sub_dag_task4',
-            dag=sub_dag,
-        )
-        t1 >> [t2, t3] >> t4
+
+    t1 = DummyOperator(
+        task_id=f'sub_dag_task1',
+        dag=sub_dag,
+    )
+    t2 = DummyOperator(
+        task_id=f'sub_dag_task2',
+        dag=sub_dag,
+    )
+    t3 = DummyOperator(
+        task_id=f'sub_dag_task3',
+        dag=sub_dag,
+    )
+    t4 = DummyOperator(
+        task_id=f'sub_dag_task4',
+        dag=sub_dag,
+    )
+    t1 >> [t2, t3] >> t4
     return sub_dag
 
 
