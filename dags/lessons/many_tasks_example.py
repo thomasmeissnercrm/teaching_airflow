@@ -28,17 +28,19 @@ end = DummyOperator(
     dag=dag
 )
 
-task_list = []
-for i in range(0, 100):
-    middle_task = DummyOperator(
-        task_id=f'mid_task_a{i}',
-        dag=dag
-    )
+middle_task = DummyOperator(
+    task_id=f'mid_task',
+    dag=dag
+)
 
-    middle_task2 = DummyOperator(
-        task_id=f'mid_task_b{i}',
-        dag=dag
-    )
+middle_task2 = DummyOperator(
+    task_id=f'mid_task_b',
+    dag=dag
+)
+
+task_list = []
+for i in range(0, 15):
+
     t1 = DummyOperator(
         task_id=f'task_{i}',
         dag=dag
@@ -55,7 +57,7 @@ for i in range(0, 100):
         task_id=f'next_task_{i}',
         dag=dag
     )
-    task_list.append(start >> middle_task >> middle_task2 >> t1 >> [t2, t3] >> t4 >> end)
+    middle_task2 >> t1 >> [t2, t3] >> t4 >> end
 
 
-task_list
+start >> middle_task >> middle_task2

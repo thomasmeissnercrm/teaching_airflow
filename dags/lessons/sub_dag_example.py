@@ -62,20 +62,22 @@ end = DummyOperator(
     dag=dag
 )
 task_list = []
-for i in range(0, 100):
-    r_task = DummyOperator(
-        task_id=f'some_task_{i}',
-        dag=dag
-    )
-    r_task_2 = DummyOperator(
-        task_id=f'another_task_{i}',
-        dag=dag
-    )
+
+r_task = DummyOperator(
+    task_id=f'some_task',
+    dag=dag
+)
+r_task_2 = DummyOperator(
+    task_id=f'another_task',
+    dag=dag
+)
+
+for i in range(0, 15):
     sub_dags = SubDagOperator(
         task_id=f'do_sub_dags_{i}',
         subdag=prepare_sub_dag(dag.dag_id, child_dag=f'do_sub_dags_{i}'),
         dag=dag
     )
-    task_list.append(start >> r_task >> r_task_2 >> sub_dags >> end)
+    r_task_2 >> sub_dags >> end
 
-task_list
+start >> r_task >> r_task_2
