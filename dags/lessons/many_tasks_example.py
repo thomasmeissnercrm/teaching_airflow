@@ -38,7 +38,6 @@ middle_task2 = DummyOperator(
     dag=dag
 )
 
-task_list = []
 for i in range(0, 15):
 
     t1 = DummyOperator(

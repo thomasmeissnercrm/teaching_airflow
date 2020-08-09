@@ -61,7 +61,6 @@ end = DummyOperator(
     task_id='end',
     dag=dag
 )
-task_list = []
 
 r_task = DummyOperator(
     task_id=f'some_task',
