@@ -72,9 +72,6 @@ t6 = DummyOperator(
 )
 
 start >> do_choice
-do_choice >> t1
-do_choice >> t2
-do_choice >> t3
-t1 >> t4
-t2 >> t5
-t3 >> t6
+do_choice >> t1 >> t4
+do_choice >> t2 >> t5
+do_choice >> t3 >> t6
