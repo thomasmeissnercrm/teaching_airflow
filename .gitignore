@@ -7,3 +7,4 @@ __pycache__
 .DS_Store
 /airflow_env
 /mysql_data
+/ftp/data/
