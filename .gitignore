@@ -8,3 +8,4 @@ __pycache__
 /airflow_env
 /mysql_data
 /ftp/data/
+/pgdata/
