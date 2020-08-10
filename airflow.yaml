@@ -188,7 +188,7 @@ services:
     ports:
       - "3307:3306"
 
-  sftp:
+  ftp:
     image: stilliard/pure-ftpd
     networks:
       - airflow_network

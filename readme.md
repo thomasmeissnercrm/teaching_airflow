@@ -60,7 +60,7 @@ http://localhost:5555
     * host: localhost
     * port: 3307
 
-#### SFTP
+#### FTP
     * username: airflow
     * password: airflow
     * host: localhost
@@ -83,8 +83,8 @@ http://localhost:5555
     * host: mysql
     * port: 3306
 
-#### SFTP
+#### FTP
     * username: airflow
     * password: airflow
-    * host: sftp
+    * host: ftp
     * port: 21
