@@ -9,3 +9,4 @@ __pycache__
 /mysql_data
 /ftp/data/
 /pgdata/
+__pycache__
