@@ -4,7 +4,7 @@ from postgres_extended_plugin.operators.postgres_ftp_operator import PostgresFtp
 from postgres_extended_plugin.sensors.postgres_table_sensor import PostgresTableSensor
 
 
-class ExamplePlugin(AirflowPlugin):
+class PostgresExtendedPlugin(AirflowPlugin):
     name = "postgres_extended_plugin"
     hooks = [PostgresExtendedHook]
     operators = [PostgresFtpOperator]
