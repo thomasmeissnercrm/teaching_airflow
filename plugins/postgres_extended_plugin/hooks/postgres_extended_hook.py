@@ -1,8 +1,6 @@
 from airflow.hooks.postgres_hook import PostgresHook
 from airflow.exceptions import AirflowException
-from contextlib import closing
 import logging
-import sys
 import pandas as pd
 
 
